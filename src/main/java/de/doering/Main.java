@@ -1,10 +1,8 @@
 package de.doering;
 
 import de.doering.lib.Token;
+import de.doering.lib.TokenTypes;
 import de.doering.lib.Tokenizer;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,20 +10,22 @@ import org.apache.logging.log4j.Logger;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
 
-    public static void test(int i) {
-        i+=1;
-    }
-
     private static final Logger LOGGER = LogManager.getLogger(Main.class);
     public static void main(String[] args) {
         Tokenizer tokenizer = new Tokenizer();
-        // wie man bei ausführung sehen kann gibt es den bug das das wahl symbol nach der shcliessenden runden klammern nciht mit geparsed wird
-        System.out.println("ITERATION 1:");
-        List<Token> tokens = tokenizer.tokenize("(\"a\",\"b\"|\"d\")|\"c\"");
-        tokens.forEach(System.out::println);
-        System.out.println("ITERATION 2:");
-        LOGGER.info("was geht");
-        tokens.forEach(token -> LOGGER.info(tokenizer.tokenize((token.getTokenValue()))));
+        var rule1 = "ZifferAusserNull \"1\" | \"2\" | \"3\" | \"4\" | \"5\" | \"6\" | \"7\" | \"8\" | \"9\"";
+        var rule2 = "Ziffer = \"0\" | ZifferAusserNull";
+        var dummy = "(\"a\",\"b\"|\"d\")|\"c\"";
+        var roottoken = new Token(TokenTypes.WURZEL, rule1);
+        var tokenlist = tokenizer.tokenize(roottoken);
+        LOGGER.info(tokenlist.toString(1));
+        var roottoken2 = new Token(TokenTypes.WURZEL, rule2);
+        var tokenlist2 = tokenizer.tokenize(roottoken2);
+        LOGGER.info(tokenlist2.toString(1));
+        var hexRule = "HexZahl (\"0\", \"x\"){\"a\" | \"b\" | \"c\" | \"d\" | \"e\" | \"f\" | \"0\" | \"1\" | \"2\" | \"3\" | \"4\" | \"5\" | \"6\" | \"7\" | \"8\" | \"9\"}+";
+        var hexroot = new Token(TokenTypes.WURZEL, hexRule);
+        var hextokens= tokenizer.tokenize(hexroot);
+        LOGGER.info(hextokens.toString(1));
 
     }
 }

@@ -15,8 +15,9 @@ public class LexingDTO {
     }
 
     public String getSymbolAndIncrement() {
+        String symbol = getSymbol();
         increment();
-        return getSymbol();
+        return symbol;
     }
 
     public String getSymbolAndIncrement(int increment) {

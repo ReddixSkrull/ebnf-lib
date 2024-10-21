@@ -1,9 +1,15 @@
 package de.doering.lib;
 
+import com.sun.source.tree.BreakTree;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Token {
 
     TokenTypes tokenType;
     String tokenValue = "";
+    List<Token> childTokens = new ArrayList<>();
 
     public Token() {
     }
@@ -33,6 +39,15 @@ public class Token {
         this.tokenValue = this.tokenValue.concat(tokenValue);
     }
 
+
+    public List<Token> getChildTokens() {
+        return childTokens;
+    }
+
+    public void setChildTokens(List<Token> childTokens) {
+        this.childTokens = childTokens;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -51,11 +66,20 @@ public class Token {
         return result;
     }
 
-    @Override
-    public String toString() {
-        return "Token{" +
-                "tokenType=" + tokenType +
-                ", tokenValue='" + tokenValue + '\'' +
-                '}';
+    public String toString(int depths) {
+        depths++;
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < depths; i++) {
+            stringBuilder.append("\t");
+        }
+        stringBuilder.append(STR."tokenType=\{tokenType}, ");
+        stringBuilder.append(STR."tokenValue='\{tokenValue}' ");
+        if (childTokens.isEmpty()) {
+            return stringBuilder.toString();
+        }
+        for (Token child : childTokens) {
+            stringBuilder.append(STR."\n\t\{child.toString(depths)}");
+        }
+        return stringBuilder.toString();
     }
 }
