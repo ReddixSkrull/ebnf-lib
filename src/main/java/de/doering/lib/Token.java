@@ -78,6 +78,9 @@ public class Token {
             return stringBuilder.toString();
         }
         for (Token child : childTokens) {
+            if (child == null) {
+                continue;
+            }
             stringBuilder.append(STR."\n\t\{child.toString(depths)}");
         }
         return stringBuilder.toString();

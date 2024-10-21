@@ -1,5 +1,7 @@
 package de.doering.lib;
 
+import de.doering.Main;
+
 import java.security.InvalidParameterException;
 import java.util.*;
 
@@ -11,6 +13,7 @@ public class Tokenizer {
      *   @TODO
      *              - nicht schön aber funktioniert
      *              - Ich muss sicherstellen das es nicht sich selbst in sich einsetzt und eine schleife erzeugt
+     *              - der tokenizer erkennt noch kein ';' als eof
      * */
 
 
@@ -151,6 +154,15 @@ public class Tokenizer {
             throw new InvalidParameterException("Der Uebergene Token ist nicht vom Typ NICHTTERMINAL");
         }
         return rules.get(token.getTokenValue());
+    }
+
+    public Map<String, Token> parseFile(String filename) {
+        FileReader fileReader = new FileReader();
+        var lines = fileReader.readFileFromResources(filename);
+        for (String line : lines) {
+            tokenize(new Token(TokenTypes.WURZEL, line));
+        }
+        return rules;
     }
 
 }
