@@ -7,6 +7,11 @@ public class Tokenizer {
 
     String symbols = "{}()[]\"|,";
     Map<String, Token> rules = new HashMap<>();
+    /*
+     *   @TODO
+     *              - nicht schön aber funktioniert
+     *              - Ich muss sicherstellen das es nicht sich selbst in sich einsetzt und eine schleife erzeugt
+     * */
 
 
     public Token tokenize(Token token) {
@@ -39,7 +44,7 @@ public class Tokenizer {
                     currentToken = lexWAHL(lexingDTO);
                     tokens.add(currentToken);
                     break;
-                case " ":
+                case " ", "=":
                     lexingDTO.increment();
                     break;
                 default:
@@ -50,13 +55,20 @@ public class Tokenizer {
         }
         for (Token childToken : tokens) {
             switch (childToken.getTokenType()) {
-                case TokenTypes.TERMINAL, TokenTypes.ANEINANDERREIHUNG, TokenTypes.WAHL, TokenTypes.NICHTTERMINAL:
+                case TokenTypes.TERMINAL, TokenTypes.ANEINANDERREIHUNG, TokenTypes.WAHL:
+                    break;
+                case TokenTypes.NICHTTERMINAL:
+                    // schaut nach an welchem index das akteulle nichtterminal childtoken ist und tauscht es mit dem token aus das hinter der regel steht
+                    if (tokens.indexOf(childToken) > 0) {
+                        tokens.set(tokens.indexOf(childToken), NICHTTERMINAL_lookup(childToken));
+                    }
                     break;
                 default:
                     tokenize(childToken);
             }
         }
         token.setChildTokens(tokens);
+        rules.put(token.getChildTokens().getFirst().getTokenValue(), token);
         return token;
     }
 
@@ -130,19 +142,6 @@ public class Tokenizer {
         currentToken.setTokenType(TokenTypes.NICHTTERMINAL);
         while (lexingDTO.getIndex() < lexingDTO.getSplit().length && !Objects.equals(lexingDTO.getSymbol(), " ") && !symbols.contains(lexingDTO.getSymbol())) {
             currentToken.appendTokenValue(lexingDTO.getSymbolAndIncrement());
-        }
-        return currentToken;
-    }
-
-
-    private Token lexNICHTTERMINAL_mit_lookup(LexingDTO lexingDTO) {
-        Token currentToken = new Token();
-        currentToken.setTokenType(TokenTypes.NICHTTERMINAL);
-        while (lexingDTO.getIndex() < lexingDTO.getSplit().length && !Objects.equals(lexingDTO.getSymbol(), " ") && !symbols.contains(lexingDTO.getSymbol())) {
-            currentToken.appendTokenValue(lexingDTO.getSymbolAndIncrement());
-        }
-        if (rules.containsKey(currentToken.getTokenValue())) {
-            return rules.get(currentToken.getTokenValue());
         }
         return currentToken;
     }

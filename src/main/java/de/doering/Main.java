@@ -18,14 +18,14 @@ public class Main {
         var dummy = "(\"a\",\"b\"|\"d\")|\"c\"";
         var roottoken = new Token(TokenTypes.WURZEL, rule1);
         var tokenlist = tokenizer.tokenize(roottoken);
-        LOGGER.info(tokenlist.toString(1));
+        LOGGER.info("\n"+tokenlist.toString(1));
         var roottoken2 = new Token(TokenTypes.WURZEL, rule2);
         var tokenlist2 = tokenizer.tokenize(roottoken2);
-        LOGGER.info(tokenlist2.toString(1));
+        LOGGER.info("\n"+tokenlist2.toString(1));
         var hexRule = "HexZahl (\"0\", \"x\"){\"a\" | \"b\" | \"c\" | \"d\" | \"e\" | \"f\" | \"0\" | \"1\" | \"2\" | \"3\" | \"4\" | \"5\" | \"6\" | \"7\" | \"8\" | \"9\"}+";
         var hexroot = new Token(TokenTypes.WURZEL, hexRule);
         var hextokens= tokenizer.tokenize(hexroot);
-        LOGGER.info(hextokens.toString(1));
+        LOGGER.info("\n"+hextokens.toString(1));
 
     }
 }
