@@ -14,6 +14,7 @@ public class Tokenizer {
      *              - nicht schön aber funktioniert
      *              - Ich muss sicherstellen das es nicht sich selbst in sich einsetzt und eine schleife erzeugt
      *              - der tokenizer erkennt noch kein ';' als eof
+     *              - eventeull sollte der lexer erst alle regeln lexen und dann die ncihttermianl symbole untereinander auflösen
      * */
 
 
