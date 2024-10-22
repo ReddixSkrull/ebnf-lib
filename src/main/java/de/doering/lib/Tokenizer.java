@@ -1,6 +1,5 @@
 package de.doering.lib;
 
-import de.doering.Main;
 
 import java.security.InvalidParameterException;
 import java.util.*;
@@ -15,8 +14,13 @@ public class Tokenizer {
      *              - Ich muss sicherstellen das es nicht sich selbst in sich einsetzt und eine schleife erzeugt
      *              - der tokenizer erkennt noch kein ';' als eof
      *              - eventeull sollte der lexer erst alle regeln lexen und dann die ncihttermianl symbole untereinander auflösen
+     *
      * */
 
+    /* @TODO
+     *              - schluss: ich denke der lexer sollte die nichtterminal gar nicht auflösen das sollte erst der
+     *                  parser tun wenn er etwas gegen eine regel parst
+    * */
 
     public Token tokenize(Token token) {
         LexingDTO lexingDTO = new LexingDTO(token.getTokenValue().split(""), 0);  // Initialisierung des LexingDTO
@@ -59,13 +63,7 @@ public class Tokenizer {
         }
         for (Token childToken : tokens) {
             switch (childToken.getTokenType()) {
-                case TokenTypes.TERMINAL, TokenTypes.ANEINANDERREIHUNG, TokenTypes.WAHL:
-                    break;
-                case TokenTypes.NICHTTERMINAL:
-                    // schaut nach an welchem index das akteulle nichtterminal childtoken ist und tauscht es mit dem token aus das hinter der regel steht
-                    if (tokens.indexOf(childToken) > 0) {
-                        tokens.set(tokens.indexOf(childToken), NICHTTERMINAL_lookup(childToken));
-                    }
+                case TokenTypes.TERMINAL, TokenTypes.ANEINANDERREIHUNG, TokenTypes.WAHL, TokenTypes.NICHTTERMINAL:
                     break;
                 default:
                     tokenize(childToken);
