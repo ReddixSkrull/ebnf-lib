@@ -9,6 +9,7 @@ public enum TokenTypes {
     NICHTTERMINAL,
     ANEINANDERREIHUNG,
     GRUPPE,
-    WURZEL
+    WURZEL,
+    FEHLER
 }
 

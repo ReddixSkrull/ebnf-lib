@@ -70,7 +70,9 @@ public class Tokenizer {
             }
         }
         token.setChildTokens(tokens);
-        rules.put(token.getChildTokens().getFirst().getTokenValue(), token);
+        if(!rules.containsKey(token.getChildTokens().getFirst().getTokenValue())){
+            rules.put(token.getChildTokens().getFirst().getTokenValue(), token);
+        }
         return token;
     }
 
